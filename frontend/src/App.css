@@ -1,0 +1,31 @@
+.App {
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    font-size: 2em;
+    color: #2b4f60;
+    margin-top: 20px;
+}
+
+button {
+    font-size: 1.2em;
+    padding: 15px 20px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.large-button {
+    width: 80%;
+    max-width: 300px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
