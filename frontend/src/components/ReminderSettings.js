@@ -1,26 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 function ReminderSettings({ setActivePage }) {
-    const [reminderText, setReminderText] = useState('');
-
-    const handleSetReminder = () => {
-        // Placeholder for setting a reminder (API call will go here)
-        alert(`Reminder set: ${reminderText}`);
-        setReminderText('');
-    };
-
     return (
         <div>
-            <h2>Set a Reminder</h2>
-            <input
-                type="text"
-                value={reminderText}
-                onChange={(e) => setReminderText(e.target.value)}
-                placeholder="Enter reminder text here"
-            />
-            <br />
-            <button onClick={handleSetReminder} className="large-button">Set Reminder</button>
-            <button onClick={() => setActivePage('dashboard')} className="large-button">Back to Dashboard</button>
+            <h2>Set Reminder</h2>
+            <p>Reminder settings and options go here.</p>
+            <button onClick={() => setActivePage('dashboard')}>Back to Dashboard</button>
         </div>
     );
 }

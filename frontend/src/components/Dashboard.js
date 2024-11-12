@@ -1,12 +1,17 @@
 import React from 'react';
 
 function Dashboard({ setActivePage }) {
+    const handleNavigation = (page) => {
+        console.log(`Navigating to ${page}`);
+        setActivePage(page);
+    };
+
     return (
         <div>
-            <h2>Main Dashboard</h2>
-            <button className="large-button" onClick={() => setActivePage('reminder')}>Set a Reminder</button>
-            <button className="large-button" onClick={() => setActivePage('checkin')}>Wellness Check-In</button>
-            <button className="large-button" onClick={() => setActivePage('sos')}>SOS Alert</button>
+            <h2>Dashboard</h2>
+            <button onClick={() => handleNavigation('reminder')}>Set Reminder</button>
+            <button onClick={() => handleNavigation('checkin')}>Check-In</button>
+            <button onClick={() => handleNavigation('sos')}>SOS Alert</button>
         </div>
     );
 }
