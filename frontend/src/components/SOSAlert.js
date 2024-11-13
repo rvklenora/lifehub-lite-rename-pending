@@ -2,10 +2,29 @@ import React from 'react';
 
 function SOSAlert({ setActivePage }) {
     const handleSOS = () => {
-        // Handle the SOS alert (e.g., send message to emergency contact)
-        console.log("SOS Alert Triggered!");
-        alert("SOS Alert Sent!");
-        setActivePage('dashboard');
+        // Data to send to the backend
+        const sosData = {
+            message: 'SOS Alert triggered!',
+            timestamp: new Date().toISOString()
+        };
+
+        // Send data to the backend
+        fetch('http://localhost:5000/sos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(sosData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Backend Response:', data);
+            alert('SOS Alert Sent!');
+            setActivePage('dashboard');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     };
 
     return (
