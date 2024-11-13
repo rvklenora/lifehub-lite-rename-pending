@@ -8,9 +8,29 @@ function CheckInPrompt({ setActivePage }) {
     };
 
     const handleSubmit = () => {
-        // Handle the mood submission (e.g., send to backend or store locally)
-        console.log(`User mood: ${mood}`);
-        setActivePage('dashboard');
+        // Data to send to the backend
+        const checkInData = {
+            mood,
+            timestamp: new Date().toISOString()
+        };
+
+        // Send data to the backend
+        fetch('http://localhost:5000/checkin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(checkInData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Backend Response:', data);
+            setMood('');  // Clear the mood input after submission
+            setActivePage('dashboard');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     };
 
     return (
