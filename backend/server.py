@@ -31,6 +31,15 @@ assistant = AssistantV2(
 )
 assistant.set_service_url(assistant_url)
 
+@app.route('/api/receive-transcript', methods=['POST'])
+def receive_transcript():
+    data = request.get_json()
+    transcript = data.get('transcript', '')
+    print('Received transcript from frontend:', transcript)
+    
+    # For now, just return a success response
+    return jsonify({'status': 'success', 'message': 'Transcript received'}), 200
+
 # Endpoint to provide IAM token for Watson Speech to Text
 @app.route('/api/speech-to-text-token', methods=['GET'])
 def get_speech_to_text_token():
