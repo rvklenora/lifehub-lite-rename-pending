@@ -1,0 +1,24 @@
+SPEECH->TEXT 
+
+API : vPv_Lc5RkLFoR4EJDOK7cKE9mDhvjE_G2b8jDmBJ7BAe
+URL: https://api.au-syd.speech-to-text.watson.cloud.ibm.com/instances/b7dea7cb-1d68-4c33-85ee-5c3d90e0b425
+
+WATSON:
+
+API: RQvMeZ9FuWc4yJ2CIUW9KryEBu07h3KhtfZN-XZ1g5L9
+URL: https://api.au-syd.assistant.watson.cloud.ibm.com/instances/fcbac4ce-d83a-4d48-a9a2-4210d51e9832
+
+
+Cloudant:
+
+{
+  "apikey": "qWTFXwfJiU__04kFHBVxVw8yoLT_FHQJ3NECH1hr3zWu",
+  "host": "f156e0aa-415d-4be7-b6c3-c77c53700de3-bluemix.cloudantnosqldb.appdomain.cloud",
+  "iam_apikey_description": "Auto-generated for key crn:v1:bluemix:public:cloudantnosqldb:au-syd:a/da25d551358a446f967e9362b35284e3:516e9136-18d3-4190-8f57-d0c8fd241001:resource-key:9a8c57e1-f816-4821-aadd-a971a646bfbc",
+  "iam_apikey_id": "ApiKey-ffebddce-1ff3-44a6-aed8-ce226e185805",
+  "iam_apikey_name": "Service-credentials-1",
+  "iam_role_crn": "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+  "iam_serviceid_crn": "crn:v1:bluemix:public:iam-identity::a/da25d551358a446f967e9362b35284e3::serviceid:ServiceId-82d66f4f-f5a4-4629-a82c-7f43d5042f85",
+  "url": "https://f156e0aa-415d-4be7-b6c3-c77c53700de3-bluemix.cloudantnosqldb.appdomain.cloud",
+  "username": "f156e0aa-415d-4be7-b6c3-c77c53700de3-bluemix"
+}
