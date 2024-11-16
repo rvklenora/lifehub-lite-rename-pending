@@ -1,31 +1,193 @@
-.App {
-    text-align: center;
+/* Global reset for body */
+body {
+    margin: 0;
     font-family: Arial, sans-serif;
+    background-color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-h1 {
+/* Main app container */
+.App {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 3x3 Grid Layout */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+    flex-grow: 1;
+}
+
+/* Tile styles */
+.grid-tile {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.grid-tile:hover {
+    transform: scale(1.05);
+}
+
+/* Specific tile styles */
+.biographic-info {
+    background-color: #ffeb3b;
+}
+
+.health-status {
+    background-color: #ff7043;
+    color: white;
+}
+
+.calendar-scheduling {
+    background-color: #4caf50;
+    color: white;
+}
+
+.biographic-info-extension {
+    background-color: #ffeb3b;
+}
+
+.sos-alert {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.daily-reminders {
+    background-color: #4caf50;
+    color: white;
+}
+
+.placeholder-tile {
+    background-color: #9e9e9e;
+    color: white;
+}
+
+.check-in-prompt {
+    background-color: #ffa726;
+    color: white;
+}
+
+.dashboard-tile {
+    background-color: #3f51b5;
+    color: white;
+}
+
+.icon {
     font-size: 2em;
-    color: #2b4f60;
-    margin-top: 20px;
 }
 
-button {
+/* Footer styles */
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: #4caf50; /* Green color */
+    color: white;
+    padding: 0 20px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Ensure it's above other elements */
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+}
+
+.footer-text {
     font-size: 1.2em;
-    padding: 15px 20px;
-    margin: 10px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.footer-icon {
+    font-size: 1.5em;
     cursor: pointer;
 }
 
-.large-button {
-    width: 80%;
-    max-width: 300px;
-    background-color: #4CAF50;
+.heart-icon {
+    margin-right: 10px;
+}
+
+.camera-icon {
+    margin: 0 auto;
+}
+
+.settings-icon {
+    margin-left: auto;
+}
+
+/* Listening Banner Styles */
+.listening-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background-color: #4caf50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    z-index: 10;
+  }
+  
+/* Camera Feed Styles */
+.camera-container {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 320px;
+    height: 240px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.camera-feed {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.close-camera-button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 1em;
+    background-color: #d32f2f;
     color: white;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
 }
 
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+.close-camera-button:hover {
+    background-color: #b71c1c;
 }
+
+
