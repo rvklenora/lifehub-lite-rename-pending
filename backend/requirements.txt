@@ -4,3 +4,6 @@ ibm-watson
 ibm-cloud-sdk-core
 python-dotenv
 cloudant
+openai
+transformers
+huggingface-hub
