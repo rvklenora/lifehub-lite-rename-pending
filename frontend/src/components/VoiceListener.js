@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import * as WatsonSpeech from 'watson-speech';
 
-function VoiceListener() {
+function VoiceListener({ setIsListening }) {
   const streamRef = useRef(null);
   const isListeningRef = useRef(false);
   const isProcessingRef = useRef(false);
@@ -73,28 +73,19 @@ function VoiceListener() {
 
       try {
         console.log("Attempting to fetch IAM token and service URL from backend...");
-        // Fetch the IAM token and service URL from the backend
         const response = await fetch('http://localhost:5000/api/speech-to-text-token');
-
-        console.log("Received response from token endpoint:", response);
 
         if (!response.ok) {
           throw new Error(`Failed to fetch token: ${response.status} (${response.statusText})`);
         }
 
         const data = await response.json();
-        console.log("Token endpoint response data:", data);
-
-        const accessToken = data.accessToken;
-        const serviceUrl = data.serviceUrl;
+        const { accessToken, serviceUrl } = data;
 
         if (!accessToken || !serviceUrl) {
           throw new Error("Access token or service URL is missing in the response");
         }
 
-        console.log("Access token and service URL obtained successfully");
-
-        // Save the tokens in refs for later use
         accessTokenRef.current = accessToken;
         serviceUrlRef.current = serviceUrl;
 
@@ -125,11 +116,11 @@ function VoiceListener() {
         ttsServiceUrlRef.current = ttsServiceUrl;
 
         // Test microphone access before initializing the stream
+
         console.log("Checking microphone access...");
         await navigator.mediaDevices.getUserMedia({ audio: true });
         console.log("Microphone access granted");
 
-        // Set up Speech to Text service
         console.log("Initializing the speech-to-text stream...");
         const stream = WatsonSpeech.SpeechToText.recognizeMicrophone({
           accessToken: accessTokenRef.current,
@@ -137,20 +128,17 @@ function VoiceListener() {
           interimResults: true,
           objectMode: true,
           format: true,
-          inactivity_timeout: -1, // Keep the connection alive
+          inactivity_timeout: -1,
         });
 
-        console.log("Speech-to-text stream initialized");
-
-        // Save the stream reference
         streamRef.current = stream;
 
-        // Handle transcription data
-        console.log("Attaching event listeners to the stream...");
+        // Set the listening state to true
+        setIsListening(true);
+        isListeningRef.current = true;
+
         stream.on('data', (data) => {
           try {
-            console.log("Received data from Watson Speech to Text:", data);
-
             if (
               data.results &&
               data.results[0] &&
@@ -159,56 +147,41 @@ function VoiceListener() {
             ) {
               const transcript = data.results[0].alternatives[0].transcript.trim();
               const isFinal = data.results[0].final;
-
-              console.log("Transcript received:", transcript, "Is final:", isFinal);
-
-              // Update the live transcription
               setTranscription(transcript);
 
               const lowerTranscript = transcript.toLowerCase();
 
               if (!isProcessingRef.current) {
                 if (!isListeningRef.current) {
-                  // Not currently listening for a command
                   if (lowerTranscript.includes("hi")) {
                     console.log("Wake word detected");
                     isListeningRef.current = true;
                     fullTranscriptionRef.current = '';
                   }
                 } else {
-                  // Currently listening for a command
                   if (isFinal) {
-                    // Accumulate only final transcriptions to avoid duplicates
                     fullTranscriptionRef.current += ' ' + transcript;
-                    console.log("Accumulated transcription:", fullTranscriptionRef.current.trim());
 
                     if (lowerTranscript.includes("please")) {
                       console.log("Stop word detected");
                       isListeningRef.current = false;
-                      isProcessingRef.current = true; // Start processing
+                      isProcessingRef.current = true;
 
-                      // Remove the "please" from the transcription
                       const command = fullTranscriptionRef.current.replace(/please/gi, '').trim();
-                      console.log("Final command to send to backend:", command);
-
-                      // Send transcription to backend
                       sendTranscriptionToBackend(command)
                         .then(() => {
-                          isProcessingRef.current = false; // Finished processing
+                          isProcessingRef.current = false;
                         })
                         .catch((error) => {
                           console.error("Error sending transcription to backend:", error);
-                          isProcessingRef.current = false; // Allow new commands even if there's an error
+                          isProcessingRef.current = false;
                         });
 
-                      // Reset full transcription
                       fullTranscriptionRef.current = '';
                     }
                   }
                 }
               }
-            } else {
-              console.warn("No transcript available in the data received.");
             }
           } catch (error) {
             console.error("Error in 'data' event handler:", error);
@@ -217,34 +190,42 @@ function VoiceListener() {
 
         stream.on('error', (err) => {
           console.error("Error with Watson Speech to Text stream:", err);
+          setIsListening(false);
+          isListeningRef.current = false;
         });
 
-        stream.on('close', (event) => {
-          console.log("Speech to Text stream closed:", event);
+        stream.on('close', () => {
+          console.log("Speech to Text stream closed");
+          setIsListening(false);
+          isListeningRef.current = false;
         });
 
-        stream.on('connection-close', (event) => {
-          console.log("Speech to Text connection closed:", event);
+        stream.on('connection-close', () => {
+          console.log("Speech to Text connection closed");
+          setIsListening(false);
+          isListeningRef.current = false;
         });
-
-        console.log("Event listeners attached");
       } catch (error) {
         console.error("Error starting Speech to Text:", error);
+        setIsListening(false);
+        isListeningRef.current = false;
       }
     };
 
     startVoiceListener();
 
-    // Cleanup function to stop the stream when component unmounts
     return () => {
       console.log("Cleaning up VoiceListener component...");
       if (streamRef.current) {
         streamRef.current.stop();
         streamRef.current = null;
         console.log("Speech-to-text stream stopped");
+        setIsListening(false);
+        isListeningRef.current = false;
       }
     };
   }, [sendTranscriptionToBackend]); // Include sendTranscriptionToBackend in dependencies
+
 
   return (
     <div>
@@ -265,6 +246,7 @@ export default VoiceListener;
 //   const isListeningRef = useRef(false);
 //   const isProcessingRef = useRef(false);
 //   const fullTranscriptionRef = useRef('');
+
 //   const [transcription, setTranscription] = useState('');
 //   const accessTokenRef = useRef('');
 //   const serviceUrlRef = useRef('');
